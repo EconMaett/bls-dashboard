@@ -1,0 +1,218 @@
+---
+title: "Inflation explorer: showing the change in price for various goods and services"
+format:
+  dashboard: 
+    logo: images/logo.png
+    nav-buttons:
+    - icon: github
+      href: "https://github.com/econmaett/bls-dashboard"
+    theme: 
+    - pulse
+    - custom.scss
+resource_files:
+- custom.scss
+- images/logo.png
+---
+
+# R
+
+```{r}
+#| label: setup
+#| include: false
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(ggplot2)
+library(RColorBrewer)
+library(plotly)
+library(gt)
+
+df <- readRDS(file = "bls-cpi-data.rds") |> 
+  mutate(year_month = ymd(year_month))
+
+# Value for last update
+last_updated_date <- df |> 
+  summarise(last_updated_date = max(year_month)) |> 
+  pull(last_updated_date)
+
+# Value for the percentage change from the previous month
+cpi_df <- df |> 
+  filter(seriesID == "CUUR0000SA0")
+
+latest_cpi_value <- cpi_df |> 
+  summarise(latest_value = last(value)) |> 
+  pull(latest_value)
+
+latest_cpi_percent_change <- cpi_df |> 
+  filter(year_month == last_updated_date) |> 
+  pull(jan_2019_pct_change)
+
+# Data for table
+pivot_df <- df |> 
+  select(category_label, year_month, percent_change_from_previous_month) |> 
+  pivot_wider(names_from = year_month, values_from = percent_change_from_previous_month) %>%
+  select(category_label, tail(names(.), 5)) |> 
+  arrange(desc(category_label))
+```
+
+## Row {height=20%}
+
+```{r}
+#| label: valuebox1
+#| content: valuebox
+#| title: "Last updated"
+#| color: "#ffff"
+last_updated_date
+```
+
+
+```{r}
+#| label: valuebox2
+#| content: valuebox
+#| title: "Consumer Price Index (CPI)"
+#| icon: basket
+list(
+  value = round(latest_cpi_value, 2),
+  icon = "basket",
+  color = "primary"
+)
+```
+
+
+```{r}
+#| label: valuebox3
+#| content: valuebox
+#| title: "Increase from previous month"
+#| icon: percent
+#| color: primary
+value = round(latest_cpi_percent_change, 2)
+```
+
+
+## Row {height=80%}
+
+### Column {width=20%}
+
+The **Consumer Price Index (CPI)** is a measure of the average change over time in the prices paid by urban consumers for a market basket of consumer goods and services. 
+
+Indexes are available for the U.S. and various geographic areas. Average price data for select utility, automotive fuel, and food items are also available.
+
+**Source: Bureau of Labor Statistics**
+
+### Column {.tabset width=80%}
+
+```{r}
+#| label: pct-change-jan-2019-code
+#| include: false
+df <- df |> 
+  arrange(desc(category_label), desc(year_month)) |> 
+  mutate(category_label = factor(category_label, levels = unique(df$category_label)))
+
+p1 <- ggplot(
+  data = df, 
+  mapping = aes(
+    x = year_month, 
+    y = jan_2019_pct_change,
+    color = category_label,
+    group = category_label
+    )
+  ) +
+  geom_line(aes(colour = category_label)) +
+  scale_color_manual(values = c("#765AAF", rep("lightgrey", length(unique(df$category_label)) -1))) +
+  # scale_color_manual(values = ifelse(df$category_label == "All groups CPI", "#765AAF", "lightgrey")) +
+  theme_minimal() +
+  theme(
+    axis.title.x = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.x = element_text(size = 8),
+    axis.text.y = element_text(size = 9)
+  )
+```
+
+
+::: {.card title="Percentage change since Jan 2019"}
+
+Use this inflation data explorer to see which goods and services are getting cheaper or more expensive in the U.S.
+
+```{r}
+#| fig-width: 20
+#| fig-height: 8
+
+ggplotly(p1)
+```
+
+:::
+
+
+```{r}
+#| label: pct-change-monthly-code
+#| include: false
+latest_month_data <- df |> 
+  filter(year_month == max(year_month)) |> 
+  arrange(desc(percent_change_from_previous_month))
+
+
+top_six_categories <- latest_month_data |> 
+  slice_head(n = 6)
+
+
+p2 <- ggplot(
+  data = top_six_categories,
+  mapping = aes(
+    x = reorder(category_label, -percent_change_from_previous_month),
+    y = percent_change_from_previous_month,
+    fill = category_label
+    )
+  ) +
+  geom_bar(stat = "identity") +
+  scale_fill_manual(values = rev(colorRampPalette(brewer.pal(9, "BuPu"))(6))) +
+  labs(x = NULL, y = "Percent Change") +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 0.1)) +
+  theme_minimal() +
+  theme(
+    legend.position = "none",
+    axis.text.x = element_text(size = 24),
+    axis.title.x = element_text(size = 20),
+    axis.text.y = element_text(size = 24)
+  ) +
+  coord_flip()
+```
+
+
+::: {.card title="Last month's top 6"}
+Percentage change in CPI by category for the last month, top six categories
+
+```{r}
+#| fig-width: 18
+#| fig-height: 8
+p2
+```
+
+
+:::
+
+
+```{r}
+#| label: pct-change-monthly-table
+#| title: "Monthly change in prices"
+colnames(pivot_df)[1] <- "Category"
+colnames(pivot_df)[-1] <- format(ymd(colnames(pivot_df)[-1]), "%B %Y")
+
+pivot_gt <- pivot_df |> 
+  gt() |> 
+  tab_header(
+    title = "Monthly Percent Cange by Category",
+    subtitle = "Last four months"
+  ) |> 
+  fmt_number(columns = 2:5, decimals = 2) |> 
+  tab_style(
+    style = cell_text(weight = "bold", align = "center"),
+    locations = cells_column_labels(everything())
+  ) |> 
+  data_color(method = "numeric", palette = "BuPu")
+  
+
+pivot_gt
+```
+
+# Python
