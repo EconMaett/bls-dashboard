@@ -2,6 +2,8 @@
 #' title: "R script file"
 #' ---
 
+Sys.setlocale("LC_ALL","English")
+
 library(httr2)
 library(jsonlite)
 library(pins)

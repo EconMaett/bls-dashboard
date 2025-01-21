@@ -1,7 +1,7 @@
 {
   "CUUR0000SA0": {
     "status": ["REQUEST_SUCCEEDED"],
-    "responseTime": [201],
+    "responseTime": [170],
     "message": [
       ["No Data Available for Series CUUR0000SA0 Year: 2025"],
       ["BLS does not produce net change calculations for Series CUUR0000SA0"]
@@ -1314,7 +1314,7 @@
   },
   "CUUR0000SA0L1E": {
     "status": ["REQUEST_SUCCEEDED"],
-    "responseTime": [169],
+    "responseTime": [308],
     "message": [
       ["No Data Available for Series CUUR0000SA0L1E Year: 2025"],
       ["BLS does not produce net change calculations for Series CUUR0000SA0L1E"]
@@ -2627,7 +2627,7 @@
   },
   "CUUR0000SAF1": {
     "status": ["REQUEST_SUCCEEDED"],
-    "responseTime": [172],
+    "responseTime": [176],
     "message": [
       ["No Data Available for Series CUUR0000SAF1 Year: 2025"],
       ["BLS does not produce net change calculations for Series CUUR0000SAF1"]
@@ -3940,7 +3940,7 @@
   },
   "CUUR0000SA0E": {
     "status": ["REQUEST_SUCCEEDED"],
-    "responseTime": [284],
+    "responseTime": [196],
     "message": [
       ["No Data Available for Series CUUR0000SA0E Year: 2025"],
       ["BLS does not produce net change calculations for Series CUUR0000SA0E"]
@@ -5253,7 +5253,7 @@
   },
   "CUUR0000SETB01": {
     "status": ["REQUEST_SUCCEEDED"],
-    "responseTime": [161],
+    "responseTime": [181],
     "message": [
       ["No Data Available for Series CUUR0000SETB01 Year: 2025"],
       ["BLS does not produce net change calculations for Series CUUR0000SETB01"]
@@ -6566,7 +6566,7 @@
   },
   "CUUR0000SAM": {
     "status": ["REQUEST_SUCCEEDED"],
-    "responseTime": [185],
+    "responseTime": [182],
     "message": [
       ["No Data Available for Series CUUR0000SAM Year: 2025"],
       ["BLS does not produce net change calculations for Series CUUR0000SAM"]
@@ -7879,7 +7879,7 @@
   },
   "CUUR0000SEMC01": {
     "status": ["REQUEST_SUCCEEDED"],
-    "responseTime": [287],
+    "responseTime": [165],
     "message": [
       ["No Data Available for Series CUUR0000SEMC01 Year: 2025"],
       ["BLS does not produce net change calculations for Series CUUR0000SEMC01"]
@@ -9192,7 +9192,7 @@
   },
   "CUUR0000SEMD01": {
     "status": ["REQUEST_SUCCEEDED"],
-    "responseTime": [163],
+    "responseTime": [168],
     "message": [
       ["No Data Available for Series CUUR0000SEMD01 Year: 2025"],
       ["BLS does not produce net change calculations for Series CUUR0000SEMD01"]
@@ -10463,7 +10463,7 @@
   },
   "CUUR0000SEMF01": {
     "status": ["REQUEST_SUCCEEDED"],
-    "responseTime": [176],
+    "responseTime": [195],
     "message": [
       ["No Data Available for Series CUUR0000SEMF01 Year: 2025"],
       ["BLS does not produce net change calculations for Series CUUR0000SEMF01"]
@@ -11776,7 +11776,7 @@
   },
   "CUUR0000SAH1": {
     "status": ["REQUEST_SUCCEEDED"],
-    "responseTime": [182],
+    "responseTime": [184],
     "message": [
       ["No Data Available for Series CUUR0000SAH1 Year: 2025"],
       ["BLS does not produce net change calculations for Series CUUR0000SAH1"]

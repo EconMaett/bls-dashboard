@@ -2,13 +2,11 @@
 title: "Inflation explorer: showing the change in price for various goods and services"
 format:
   dashboard: 
-    logo: images/logo.png
+    logo: images/logo-orange.png
     nav-buttons:
     - icon: github
       href: "https://github.com/econmaett/bls-dashboard"
-    theme: 
-    - pulse
-    - custom.scss
+    theme: [simplex, custom.scss]
 resource_files:
 - custom.scss
 - images/logo.png
@@ -24,6 +22,8 @@ library(ggplot2)
 library(RColorBrewer)
 library(plotly)
 library(gt)
+
+Sys.setlocale("LC_ALL","English")
 
 df <- readRDS(file = "bls-cpi-data.rds") |> 
   mutate(year_month = ymd(year_month))
@@ -116,7 +116,7 @@ p1 <- ggplot(
     )
   ) +
   geom_line(aes(colour = category_label)) +
-  scale_color_manual(values = c("#765AAF", rep("lightgrey", length(unique(df$category_label)) -1))) +
+  scale_color_manual(values = c("orange", rep("lightgrey", length(unique(df$category_label)) -1))) +
   # scale_color_manual(values = ifelse(df$category_label == "All groups CPI", "#765AAF", "lightgrey")) +
   theme_minimal() +
   theme(
@@ -163,8 +163,8 @@ p2 <- ggplot(
     )
   ) +
   geom_bar(stat = "identity") +
-  scale_fill_manual(values = rev(colorRampPalette(brewer.pal(9, "BuPu"))(6))) +
-  labs(x = NULL, y = "Percent Change") +
+  scale_fill_manual(values = rev(colorRampPalette(brewer.pal(6, "YlOrRd"))(6))) +
+  labs(x = NULL, y = NULL) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 0.1)) +
   theme_minimal() +
   theme(
@@ -199,16 +199,14 @@ colnames(pivot_df)[-1] <- format(ymd(colnames(pivot_df)[-1]), "%B %Y")
 pivot_gt <- pivot_df |> 
   gt() |> 
   tab_header(
-    title = "Monthly Percent Cange by Category",
-    subtitle = "Last four months"
+    title = "Monthly Percent Cange by Category"
   ) |> 
-  fmt_number(columns = 2:5, decimals = 2) |> 
+  fmt_number(columns = 2:6, decimals = 2) |> 
   tab_style(
     style = cell_text(weight = "bold", align = "center"),
     locations = cells_column_labels(everything())
   ) |> 
-  data_color(method = "numeric", palette = "BuPu")
-  
+  data_color(method = "numeric", palette = rev(colorRampPalette(brewer.pal(11, "RdYlGn"))(11)))
 
 pivot_gt
 ```
