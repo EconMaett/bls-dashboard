@@ -14,8 +14,6 @@ resource_files:
 - images/logo.png
 ---
 
-# R
-
 ```{r}
 #| label: setup
 #| include: false
@@ -214,5 +212,3 @@ pivot_gt <- pivot_df |>
 
 pivot_gt
 ```
-
-# Python

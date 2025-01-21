@@ -8,7 +8,7 @@
         "title: \"Pythong script file\"\n",
         "---"
       ],
-      "id": "b30f3eef"
+      "id": "837d56fd"
     },
     {
       "cell_type": "code",
@@ -160,17 +160,16 @@
         "df[\"Percent_Change_from_Previous_Month\"] = grouped[\"value\"].pct_ch\n",
         "df = df.reset_index(drop=True)"
       ],
-      "id": "8df2fce0",
+      "id": "c2f55991",
       "execution_count": null,
       "outputs": []
     }
   ],
   "metadata": {
     "kernelspec": {
-      "name": "python3",
+      "display_name": "Python 3",
       "language": "python",
-      "display_name": "Python 3 (ipykernel)",
-      "path": "C:\\Users\\matth\\AppData\\Local\\Programs\\Python\\Python312\\share\\jupyter\\kernels\\python3"
+      "name": "python3"
     }
   },
   "nbformat": 4,
